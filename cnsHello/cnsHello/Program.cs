@@ -13,6 +13,5 @@
         Console.WriteLine("Имя =  {0}, Город = {1}", name, city);
         Console.WriteLine($"Имя =  {name}, Город = {city}");
 
-
     }
 }
