@@ -1,0 +1,22 @@
+﻿<Window x:Class="WpfResourceWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfResourceWindow"
+        mc:Ignorable="d"
+        Title="wpfResourceWindow" Height="450" Width="300">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="color_play" Color="Aqua"/>
+        <SolidColorBrush x:Key="color_stop" Color="LightCoral"/>
+    </Window.Resources>
+
+
+    <StackPanel>
+        <Button Content="1" Height="50" Background="LightGreen"/>
+        <Button Content="2" Height="50" Background= "{StaticResource color_play}"/>
+        <Button Content="3" Height="50" Background= "{DynamicResource color_stop}"/>
+        <Button Content="4" Height="50" Background= "{DynamicResource color_stop}" Click="Button_Click"/>
+    </StackPanel>
+</Window>
