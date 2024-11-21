@@ -9,27 +9,88 @@ namespace wfaControlPuzzle
         private PictureBox[,] px;
         private readonly int numberOfmoving = 10;
         private const int STEP = 15;
-        private Random rnd;
+        private (int Width, int Height, int startX, int startY) availableSpace;
+        private Random rnd = new();
 
-        public int Rows { get; }
-        public int Colums { get; }
+        public int Rows { get; private set; }
+        public int Colums { get; private set; }
         public int cellWidth { get; set; }
         public int cellHeight { get; set; }
+
         public Point startMouseDown { get; private set; }
 
         public wfaControlPuzzle()
         {
             InitializeComponent();
 
-            Rows = 6; Colums = 4;
-            px = new PictureBox[Rows, Colums];
+            startGame();
 
+            this.KeyDown += form1_KeyDown;
+            this.ResizeEnd += OnResizeEnd;
+            foreach (ToolStripMenuItem item in DifficulToolStripMenuItem.DropDown.Items)
+                item.Click += DifficulToolStripMenuItem_Click;
+        }
+
+
+
+        private void DifficulToolStripMenuItem_Click(object? sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem toolStripMenuItem)
+            {
+                if (toolStripMenuItem.Checked) return;
+
+                var parent = toolStripMenuItem.GetCurrentParent();
+                if (parent == null) return;
+
+                foreach (ToolStripMenuItem item in parent.Items)
+                    item.Checked = false;
+                toolStripMenuItem.Checked = true;
+
+                startGame();
+            }
+        }
+
+        private void startGame()
+        {
+            if (EasyToolStripMenuItem.Checked)
+            {
+                Rows = 5; Colums = 5;
+            }
+
+            if (NormalToolStripMenuItem.Checked)
+            {
+                Rows = 8; Colums = 8;
+            }
+
+            if (HardToolStripMenuItem.Checked)
+            {
+                Rows = 10; Colums = 10;
+            }
+            
+            if (px != null)
+            {
+                foreach (var item in px)
+                    this.Controls.Remove(item);
+                Array.Clear(px, 0, px.Length);
+            }
+            px = new PictureBox[Rows, Colums];
+            GetEmptySpace();
             CreateCells();
             ResizeCells();
             StartPositionCells();
+        }
 
-            this.KeyDown += form1_KeyDown;
+        private void OnResizeEnd(object? sender, EventArgs e)
+        {
+            GetEmptySpace();
+        }
 
+        private void GetEmptySpace()
+        {
+            availableSpace.Width = this.ClientSize.Width;
+            availableSpace.Height = this.ClientSize.Height - menuStrip1.Height - statusStrip1.Height;
+            availableSpace.startX = 0;
+            availableSpace.startY = menuStrip1.Height;
         }
 
         private void form1_KeyDown(object? sender, KeyEventArgs e)
@@ -41,6 +102,7 @@ namespace wfaControlPuzzle
                     break;
                 case Keys.F2:
                     ResizeCells();
+                    StartPositionCells();
                     break;
                 case Keys.F3:
                     RandomLocationCells();
@@ -61,7 +123,7 @@ namespace wfaControlPuzzle
                 var c1 = rnd.Next(Colums);
                 var c2 = rnd.Next(Colums);
 
-                (px[r1, c1].Location, px[r2, c2].Location) = (px[r2, c2].Location, px[r1, c1].Location); 
+                (px[r1, c1].Location, px[r2, c2].Location) = (px[r2, c2].Location, px[r1, c1].Location);
             }
         }
 
@@ -71,42 +133,45 @@ namespace wfaControlPuzzle
                 for (int j = 0; j < Colums; j++)
                 {
                     px[i, j].Location = new Point(
-                        rnd.Next(this.ClientSize.Width - cellWidth),
-                        rnd.Next(this.ClientSize.Height - cellHeight)
+                        availableSpace.startX + rnd.Next(availableSpace.Width + availableSpace.startX - cellWidth),
+                        availableSpace.startY + rnd.Next(availableSpace.Height + availableSpace.startY - cellHeight)
                         );
                 }
         }
 
         private void StartPositionCells()
         {
-            for (int i = 0; i < Rows; i++) 
+            for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Colums; j++)
                 {
-                    px[i, j].Location = new Point(i * cellWidth, j * cellHeight);
+                    px[i, j].Location = new Point(j * cellWidth, i * cellHeight + availableSpace.startY);
                 }
         }
 
         private void ResizeCells()
         {
-           cellWidth = this.ClientSize.Width / Colums;
-           cellHeight = this.ClientSize.Height / Rows;
+            GetEmptySpace();
+            cellWidth = availableSpace.Width / Colums;
+            cellHeight = availableSpace.Height / Rows;
 
             for (int i = 0; i < Rows; i++)
                 for (int j = 0; j < Colums; j++)
                 {
                     px[i, j].Width = cellWidth;
                     px[i, j].Height = cellHeight;
-
+                    
+                    if (px[i, j].Image != null)
+                        px[i, j].Image.Dispose();
                     px[i, j].Image = new Bitmap(cellWidth, cellHeight);
                     var g = Graphics.FromImage(px[i, j].Image);
 
                     g.DrawImage(
                         new Bitmap(new MemoryStream(Properties.Resources.Puzzle)),
                         new Rectangle(0, 0, cellWidth, cellHeight),
-                        new Rectangle(i * cellWidth, j * cellHeight, cellWidth, cellHeight),
+                        new Rectangle(j * cellWidth, i * cellHeight, cellWidth, cellHeight),
                         GraphicsUnit.Pixel
                     );
-                    
+
                     g.Dispose();
                 }
         }
@@ -122,8 +187,7 @@ namespace wfaControlPuzzle
                     px[i, j].MouseMove += Cell_MouseMove;
                     px[i, j].MouseDown += Cell_MouseDown;
 
-
-                    this.Controls.Add(px[i,j]);
+                    this.Controls.Add(px[i, j]);
                 }
         }
 
@@ -140,12 +204,12 @@ namespace wfaControlPuzzle
                     for (int i = 0; i < Rows; i++)
                         for (int j = 0; j < Colums; j++)
                         {
-                            var devX = Math.Abs(i * cellWidth - l.X);
-                            var devY = Math.Abs(j * cellHeight - l.Y);
+                            var devX = Math.Abs(j * cellWidth + availableSpace.startX - l.X);
+                            var devY = Math.Abs(i * cellHeight + availableSpace.startY - l.Y);
 
                             if (devX < STEP && devY < STEP)
                             {
-                                l = new Point(i * cellWidth, j * cellHeight);
+                                l = new Point(j * cellWidth + availableSpace.startX, i * cellHeight + availableSpace.startY);
                                 break;
                             }
                         }
@@ -161,8 +225,15 @@ namespace wfaControlPuzzle
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    v.Location = new Point(v.Location.X + e.Location.X - startMouseDown.X,
-                        v.Location.Y + e.Location.Y - startMouseDown.Y);
+                    int offSetX = v.Location.X + e.Location.X - startMouseDown.X;
+                    int offSetY = v.Location.Y + e.Location.Y - startMouseDown.Y;
+                    if (offSetY < availableSpace.startY) offSetY = availableSpace.startY;
+                    if (offSetX < availableSpace.startX) offSetX = availableSpace.startX;
+                    if (offSetY > availableSpace.startY + availableSpace.Height - cellHeight)
+                        offSetY = availableSpace.startY + availableSpace.Height - cellHeight;
+                    if (offSetX > availableSpace.startX + availableSpace.Width - cellWidth)
+                        offSetX = availableSpace.startX + availableSpace.Width - cellWidth;
+                    v.Location = new Point(offSetX, offSetY);
                 }
             }
         }
