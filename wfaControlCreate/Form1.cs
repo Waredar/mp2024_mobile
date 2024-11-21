@@ -8,6 +8,12 @@ namespace wfaControlCreate
             InitializeComponent();
 
             this.MouseDown += Form1_MouseDown;
+            this.MouseDown += Form1_MouseDown1;
+        }
+
+        private void Form1_MouseDown1(object? sender, MouseEventArgs e)
+        {
+            return;
         }
 
         private void Form1_MouseDown(object? sender, MouseEventArgs e)
