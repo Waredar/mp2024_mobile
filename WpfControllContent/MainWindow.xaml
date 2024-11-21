@@ -1,0 +1,33 @@
+﻿<Window x:Class="WpfControllContent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfControllContent"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Column="0">Кнопка 1</Button>
+        <Button Grid.Column="1">Кнопка 2</Button>
+        <Button Grid.Column="0" Grid.Row="1">
+            <Button.Content>
+                <StackPanel>
+                    <Label Content="1"/>
+                    <Label Content="2" Background="Aqua"/>
+                    <Label Content="3"/>
+                    <Image Source="/Resources/1.jpg" Width="100"/>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+    </Grid>
+</Window>

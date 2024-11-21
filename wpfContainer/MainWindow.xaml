@@ -1,0 +1,87 @@
+﻿<Window x:Class="wpfContainer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:wpfContainer"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="300">
+    <!--<Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="40px"/>        
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="1" Grid.Row="0" Content="111"/>
+        <Button Grid.Column="0" Grid.Row="1" Content="22"
+                Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+    </Grid>-->
+
+
+    <!--<UniformGrid Columns="2" Rows="5">
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+    </UniformGrid>-->
+
+    <!--<Grid Cursor="">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="80px"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition MinWidth="80px"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Content="111"/>
+        <GridSplitter Grid.Column="1" Width="5px" HorizontalAlignment="Center" />
+        <Button Grid.Column="2" Content="111"/>
+    </Grid>-->
+
+    <!--<StackPanel>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+    </StackPanel>-->
+
+    <!--<DockPanel>
+        <Button DockPanel.Dock="Top" Content="111"/>
+        <Button DockPanel.Dock="Right" Content="111"/>
+        <Button DockPanel.Dock="Right" Content="111"/>
+        <Button DockPanel.Dock="top" Content="111"/>
+        <Button Content="111"/>
+    </DockPanel>-->
+
+    <!--<WrapPanel ItemHeight="130" ItemWidth="100">
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+        <Button Content="111"/>
+    </WrapPanel>-->
+    
+    <!--<Canvas>
+        <Button Content="111"/>
+        <Button Content="222" Canvas.Left="70"/>
+    </Canvas>-->
+</Window>
