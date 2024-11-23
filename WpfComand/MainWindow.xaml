@@ -1,0 +1,31 @@
+﻿<Window x:Class="WpfComand.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfComand"
+        mc:Ignorable="d"
+        Title="WpfComand" Height="450" Width="300">
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="Command_New_Executed"/>
+        <CommandBinding Command="Save" Executed="Command_Save_Executed" CanExecute="Command_Save_CanExecute"/>
+        <CommandBinding Command="local:MyCommands.CommandHello" Executed="Command_Hello_Executed"/>
+    </Window.CommandBindings>
+    <DockPanel>
+        <StackPanel  Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
+            <Button Content="Создать" Command="New"/>
+            <Button Content="Сохранить" Command="Save"/>
+            <Button Content="Привет" Command="local:MyCommands.CommandHello"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" HorizontalAlignment="Center">
+            <Button Content="Вырезать" Command="Cut" CommandTarget="{Binding ElementName=edName}"/>
+            <Button Content="Копировать" Command="Copy" CommandTarget="{Binding ElementName=edName}"/>
+            <Button Content="Вставить" Command="Paste" CommandTarget="{Binding ElementName=edName}"/>
+        </StackPanel>
+        <TextBox x:Name="edName"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 VerticalScrollBarVisibility="Auto"/>
+    </DockPanel>
+</Window>

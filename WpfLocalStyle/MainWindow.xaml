@@ -1,0 +1,32 @@
+﻿<Window x:Class="WpfLocalStyle.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfLocalStyle"
+        mc:Ignorable="d"
+        Title="WpfLocalStyle" Height="450" Width="300">
+    <StackPanel>
+        <StackPanel.Style>
+            <Style TargetType="StackPanel">
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+        </StackPanel.Style>
+        <StackPanel.Resources>
+            <Style TargetType="Button">
+                <Setter Property="Height" Value="50"/>
+            </Style>
+        </StackPanel.Resources>
+        <Button Content="Кнопка 1"/>
+        <Button Content="Кнопка 2"/>
+        <Button Content="Кнопка 3"/>
+        <Button Content="Кнопка 4">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Aqua"/>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="Кнопка 5"/>
+    </StackPanel>
+</Window>

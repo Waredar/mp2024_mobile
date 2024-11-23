@@ -1,0 +1,32 @@
+﻿<Window x:Class="WpfResourceDectionaly.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfResourceDectionaly"
+        mc:Ignorable="d"
+        Title="WpfResourceDectionaly" Height="450" Width="300">
+    <Window.Resources>
+        <!--(1)-->
+        <!--<ResourceDictionary Source="dictionary1.xaml"/>-->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="dictionary1.xaml"/>
+                <ResourceDictionary Source="dictionary2.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <StackPanel>
+        <Button Content="Кнопка 1"/>
+        <Button Content="Кнопка 2" Style="{StaticResource button_red}"/>
+        <Button Content="Кнопка 3"/>
+        <Button Content="Кнопка 4">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="LightBlue"/>
+                    <Setter Property="Height" Value="40"/>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackPanel>
+</Window>

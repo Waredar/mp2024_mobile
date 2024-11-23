@@ -70,7 +70,7 @@ namespace wfaControlPuzzle
             if (px != null)
             {
                 foreach (var item in px)
-                    this.Controls.Remove(item);
+                    item.Dispose();
                 Array.Clear(px, 0, px.Length);
             }
             px = new PictureBox[Rows, Colums];
@@ -160,8 +160,8 @@ namespace wfaControlPuzzle
                     px[i, j].Width = cellWidth;
                     px[i, j].Height = cellHeight;
                     
-                    if (px[i, j].Image != null)
-                        px[i, j].Image.Dispose();
+                    //if (px[i, j] != null)
+                    //    px[i, j].Dispose();
                     px[i, j].Image = new Bitmap(cellWidth, cellHeight);
                     var g = Graphics.FromImage(px[i, j].Image);
 

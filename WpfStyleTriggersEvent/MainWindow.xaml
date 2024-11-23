@@ -1,0 +1,46 @@
+﻿<Window x:Class="WpfStyleTriggersEvent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfStyleTriggersEvent"
+        mc:Ignorable="d"
+        Title="WpfStyleTriggersEvent" Height="450" Width="300">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="MouseEnter">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                             To="70" Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                             To="25" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <EventTrigger RoutedEvent="MouseLeave">
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Height"
+                                             To="45" Duration="0:0:0.3"/>
+                            <DoubleAnimation Storyboard.TargetProperty="FontSize"
+                                             To="14" Duration="0:0:0.3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <StackPanel>
+        <Button Content="Кнопка 1"/>
+        <Button Content="Кнопка 2"/>
+        <Button Content="Кнопка 3"/>
+        <Button Content="Кнопка 4"/>
+        <Button Content="Кнопка 5"/>
+        <Button Content="Кнопка 6"/>
+    </StackPanel>
+</Window>
