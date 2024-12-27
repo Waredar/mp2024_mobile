@@ -8,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
@@ -19,17 +20,39 @@ namespace WpfVar4
     ///
     public partial class MainWindow : Window
     {
+        private Drawing Drawing;
         public ObservableCollection<PropertyItem> Properties { get; set; }
         public MainWindow()
         {
+            InitializeComponent();
             Properties = new ObservableCollection<PropertyItem>();
             Properties.Add(new PropertyItem { Name = "Новый параметр", Value = "Значение" });
+            Properties.Add(new PropertyItem { Name = "Новый параметр", Value = "Значение" });
             DataContext = this;
-            InitializeComponent();
- 
+
+            Drawing = new(Draw);
+        }
+
+
+
+
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                var type = button.Content.ToString();
+                if (type == "Круг")
+                {
+                    Drawing.CreateEllipse();
+                }
+
+            }
         }
 
     }
+
+
 
     public class PropertyItem : INotifyPropertyChanged
     {

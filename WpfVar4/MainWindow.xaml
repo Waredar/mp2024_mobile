@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:WpfVar4"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -23,42 +24,58 @@
             <Button Content="Открыть" Padding="5"/>
         </StackPanel>
 
-        <Grid Grid.Column="0" Grid.Row="1">
+        <Grid Grid.Column="0" Grid.Row="1" Margin="15px">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="0.65*"/>
                 <RowDefinition/>
                 <RowDefinition Height="0.1*"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <WrapPanel>
-                    <Button Content="Круг" Width="50" Height="50"/>
-                
-                </WrapPanel>
-            </ScrollViewer>
+            <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="2" 
+                    CornerRadius="15" Padding="5" Margin="0,5,0,0">
+                <ScrollViewer  VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Button Content="Круг" Width="50" Height="50" Margin="2" Click="Button_Click"/>
+                        <Button Content="Прямоугольник" Width="50" Height="50" Margin="2" Click="Button_Click"/>
+                        <Button Content="Треугольник" Width="50" Height="50" Margin="2" Click="Button_Click"/>
+                        <Button Content="Трапеция" Width="50" Height="50" Margin="2" Click="Button_Click"/>
+                        <Button Content="Звезда" Width="50" Height="50" Margin="2" Click="Button_Click"/>
+                    </WrapPanel>
+                </ScrollViewer>
+            </Border>
+            <TextBlock Text="Фигуры" FontSize="16"
+                       HorizontalAlignment="Left" VerticalAlignment="Top" Background="White"
+                       Padding="2" Grid.Row="0" Margin="20,-10,0,0" />
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <ItemsControl ItemsSource="{Binding Properties}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+            <Border  Margin = "0, 20, 0, 0" Grid.Row="1" BorderBrush="Gray" BorderThickness="2" 
+                    CornerRadius="15" Padding="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <ItemsControl ItemsSource="{Binding Properties}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="0" />
+                                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="0" />
 
-                                <TextBox Text="{Binding Value}" Grid.Column="1" />
-                            </Grid>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
+                                    <TextBox Text="{Binding Value}" Grid.Column="1" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+            <TextBlock Text="Свойства" Grid.Row="1" FontSize="16"
+            HorizontalAlignment="Left" VerticalAlignment="Top" Background="White"
+            Padding="2" Margin="20, 5,0,0" />
+
         </Grid>
 
 
-        <Canvas Grid.Column="1" Grid.Row="1" Background="LightGray">
+        <Canvas Name="Draw" Grid.Column="1" Grid.Row="1" Background="LightGray">
             
         </Canvas>
             
