@@ -6,7 +6,7 @@ namespace WpfVar4
     public class PropertyItem : INotifyPropertyChanged
     {
         private string name = String.Empty;
-        private string value = String.Empty;
+        private object value = String.Empty;
         public string Name
         {
             get => name;
@@ -20,7 +20,7 @@ namespace WpfVar4
             }
         }
 
-        public string Value
+        public object Value
         {
             get => value;
             set

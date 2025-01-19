@@ -25,9 +25,7 @@ namespace WpfVar4
         public MainWindow()
         {
             InitializeComponent();
-            Properties = new ObservableCollection<PropertyItem>();
-            Properties.Add(new PropertyItem ("Новый параметр", "Значение" ));
-            Properties.Add(new PropertyItem("Новый параметр", "Значение"));
+            Properties = [];
             DataContext = this;
 
             Drawing = new(Draw);
@@ -35,8 +33,14 @@ namespace WpfVar4
             Drawing.ShapePropertiesChanged += (shape, properties) =>
             {
                 Properties.Clear();
-                foreach (var kvp in properties)
-                    Properties.Add(new PropertyItem(kvp.Key, kvp.Value.ToString()));
+                if (shape != null)
+                {
+                    foreach (var kvp in properties)
+                    {
+                        var prop = new PropertyItem(kvp.Key, kvp.Value.ToString());
+                        Properties.Add(prop);
+                    }
+                }
             };
 
             Drawing.SelectShape += (shape, properties) =>
@@ -44,9 +48,13 @@ namespace WpfVar4
                 Properties.Clear();
                 if (shape != null) {
                     foreach (var kvp in properties)
-                        Properties.Add(new PropertyItem(kvp.Key, kvp.Value.ToString()));
+                    {
+                        var prop = new PropertyItem(kvp.Key, kvp.Value.ToString());
+                        Properties.Add(prop);
+                    }
                 }
             };
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -59,9 +67,33 @@ namespace WpfVar4
                     Drawing.CreateEllipse();
                 }
 
+                if (type == "Прямоугольник")
+                {
+                    Drawing.CreateRectangle();
+                }    
+
             }
         }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox textBox)
+            {
+                if (textBox.Parent is Grid grid)
+                {
+                    if (grid.Children[0] is TextBlock textBlock)
+                    {
+                        Dictionary<string, object> dict = [];
+                        dict.Add(textBlock.Text, textBox.Text);
+                        if (Drawing.SelectedShape != null)
+                        {
+                            Drawing.EditShape(Drawing.SelectedShape, dict);
+                        }
+                    }
+                }
+
+            }
+        }
     } 
 
 }
