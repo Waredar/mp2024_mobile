@@ -113,68 +113,94 @@ namespace WpfVar4
             {
                 switch (property.Key)
                 {
+                    case "Type":
+                        continue;
                     case "Width":
-                        if (property.Value is double width)
+                        if (property.Value is string width)
                         {
-                            shape.Width = width;
-                            ShapesProperties[shape]["Width"] = width;
+                            if (double.TryParse(width, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double number))
+                            {
+                                shape.Width = number;
+                                ShapesProperties[shape]["Width"] = width;
+                            }
                         }
                         break;
                     case "Height":
-                        if (property.Value is double height)
+                        if (property.Value is string height)
                         {
-                            shape.Height = height;
-                            ShapesProperties[shape]["Height"] = height;
+                            if (double.TryParse(height, System.Globalization.NumberStyles.Float,
+                                    System.Globalization.CultureInfo.InvariantCulture, out double number))
+                            {
+                                shape.Height = number;
+                                ShapesProperties[shape]["Height"] = height;
+                            }
                         }
                         break;
                     case "X":
-                        if (property.Value is double x)
+                        if (property.Value is string x)
                         {
-                            Canvas.SetLeft(shape, x);
-                            ShapesProperties[shape]["X"] = x;
+                            if (double.TryParse(x, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double number))
+                            {
+                                Canvas.SetLeft(shape, number);
+                                ShapesProperties[shape]["X"] = x;
+                            }
                         }
                         break;
                     case "Y":
-                        if (property.Value is double y)
+                        if (property.Value is string y)
                         {
-                            Canvas.SetTop(shape, y);
-                            ShapesProperties[shape]["Y"] = y;
+                            if (double.TryParse(y, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double number))
+                            {
+                                Canvas.SetTop(shape, number);
+                                ShapesProperties[shape]["Y"] = y;
+                            }
                         }
                         break;
                     case "FillColor":
-                        if (property.Value is Color fillColor)
+                        if (property.Value is string fillColor)
                         {
-                            shape.Fill = new SolidColorBrush(fillColor);
-                            ShapesProperties[shape]["FillColor"] = fillColor;
+                            try
+                            {
+                                Color color = (Color)ColorConverter.ConvertFromString(fillColor);
+                                shape.Fill = new SolidColorBrush(color);
+                                ShapesProperties[shape]["FillColor"] = fillColor;
+                            }
+                            catch {
+                                continue;
+                            }
+
                         }
                         break;
                     case "StrokeWidth":
-                        if (property.Value is double strokeWidth)
+                        if (property.Value is string strokeWidth)
                         {
-                            shape.StrokeThickness = strokeWidth;
-                            ShapesProperties[shape]["StrokeWidth"] = strokeWidth;
+                            if (double.TryParse(strokeWidth, System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture, out double number))
+                            {
+                                shape.StrokeThickness = number;
+                                ShapesProperties[shape]["StrokeWidth"] = strokeWidth;
+                            }
                         }
                         break;
                     case "StrokeColor":
-                        if (property.Value is Color strokeColor)
+                        if (property.Value is string strokeColor)
                         {
-                            shape.Stroke = new SolidColorBrush(strokeColor);
-                            ShapesProperties[shape]["StrokeColor"] = strokeColor;
+                            try
+                            {
+                                Color color = (Color)ColorConverter.ConvertFromString(strokeColor);
+                                shape.Stroke = new SolidColorBrush(color);
+                                ShapesProperties[shape]["StrokeColor"] = strokeColor;
+                            }
+                            catch { continue; }
                         }
                         break;
                     default:
                         throw new ArgumentException($"Unsupported property: {property.Key}");
                 }
             }
-        }
-
-        public Dictionary<string, object> GetShapeProperties(Shape shape)
-        {
-            if (ShapesProperties.ContainsKey(shape))
-            {
-                return new Dictionary<string, object>(ShapesProperties[shape]);
-            }
-            throw new ArgumentException("Shape not found.");
         }
 
         private void OurCanvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -206,8 +232,6 @@ namespace WpfVar4
                     SelectShape?.Invoke(null, null);
                     return;
                 }
-                int maxZIndex = OurCanvas.Children.OfType<UIElement>().Max(child => Panel.GetZIndex(child));
-                Panel.SetZIndex(SelectedShape, maxZIndex + 1);
                 SelectShape?.Invoke(SelectedShape, ShapesProperties[SelectedShape]);
             }
         }
