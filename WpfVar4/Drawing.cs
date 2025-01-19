@@ -11,7 +11,7 @@ namespace WpfVar4
     {
         private Point StartPoint;
         private bool IsDragging = false;
-        private Shape? SelectedShape { get; set; }
+        public Shape? SelectedShape { get; private set; }
         public Canvas OurCanvas { get; private set; }
         private ResizeBorder ResizeBorder { get; set; }
         public readonly Dictionary<Shape, Dictionary<string, object>> ShapesProperties;
@@ -25,7 +25,7 @@ namespace WpfVar4
             OurCanvas.MouseMove += OurCanvas_MouseMove;
             OurCanvas.MouseUp += OurCanvas_MouseUp;
             ShapesProperties = [];
-            ResizeBorder = new(OurCanvas, this);
+            ResizeBorder = new(this);
         }
 
         public void CreateRectangle()
@@ -202,6 +202,7 @@ namespace WpfVar4
                 {
                     IsDragging = false;
                     ResizeBorder.RemoveResizeRectangle();
+                    SelectedShape = null;
                     SelectShape?.Invoke(null, null);
                     return;
                 }

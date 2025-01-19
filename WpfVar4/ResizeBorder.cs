@@ -9,21 +9,18 @@ using System.Windows.Shapes;
 
 namespace WpfVar4
 {
-    internal class ResizeBorder(Canvas newCanvas, Drawing draw)
+    internal class ResizeBorder(Drawing draw)
     {
         public Rectangle? resizeRectangle;
         private readonly List<Ellipse> resizeHandles = [];
         private bool IsResizing = false;
         private Ellipse? ActiveResizeHandle;
         private Point StartPoint;
-        private readonly Canvas canvas = newCanvas;
-        private Shape? templShape;
         private Drawing drawing = draw;
 
         public void ShowResizeRectangle(Shape selectedShape)
         {
             RemoveResizeRectangle();
-            templShape = selectedShape;
             var bounds = GetShapeBounds(selectedShape);
 
             resizeRectangle = new Rectangle
@@ -42,10 +39,10 @@ namespace WpfVar4
             Canvas.SetLeft(resizeRectangle, left);
             Canvas.SetTop(resizeRectangle, top);
 
-            int maxZIndex = canvas.Children.OfType<UIElement>().Max(child => Panel.GetZIndex(child));
+            int maxZIndex = drawing.OurCanvas.Children.OfType<UIElement>().Max(child => Panel.GetZIndex(child));
             Panel.SetZIndex(resizeRectangle, maxZIndex);
 
-            canvas.Children.Add(resizeRectangle);
+            drawing.OurCanvas.Children.Add(resizeRectangle);
 
             CreateResizeHandles();
         }
@@ -73,14 +70,14 @@ namespace WpfVar4
             Canvas.SetLeft(handle, x);
             Canvas.SetTop(handle, y);
 
-            canvas.MouseMove += Handle_MouseMove;
-            canvas.MouseLeftButtonDown += ResizeHandle_MouseLeftButtonDown;
-            canvas.MouseLeftButtonUp += ResizeHandle_MouseLeftButtonUp;
+            drawing.OurCanvas.MouseMove += Handle_MouseMove;
+            drawing.OurCanvas.MouseLeftButtonDown += ResizeHandle_MouseLeftButtonDown;
+            drawing.OurCanvas.MouseLeftButtonUp += ResizeHandle_MouseLeftButtonUp;
 
-            int maxZIndex = canvas.Children.OfType<UIElement>().Max(child => Panel.GetZIndex(child));
+            int maxZIndex = drawing.OurCanvas.Children.OfType<UIElement>().Max(child => Panel.GetZIndex(child));
             Panel.SetZIndex(handle, maxZIndex);
 
-            canvas.Children.Add(handle);
+            drawing.OurCanvas.Children.Add(handle);
             resizeHandles.Add(handle);
         }
 
@@ -88,7 +85,7 @@ namespace WpfVar4
         {
             foreach (var handle in resizeHandles) {
                 if (handle.IsMouseOver) {
-                    StartPoint = e.GetPosition(canvas);
+                    StartPoint = e.GetPosition(drawing.OurCanvas);
                     IsResizing = true;
                     ActiveResizeHandle = handle;
                 }
@@ -98,10 +95,10 @@ namespace WpfVar4
 
         private void Handle_MouseMove(object sender, MouseEventArgs e)
         {
-            if (IsResizing && ActiveResizeHandle != null && templShape != null)
+            if (IsResizing && ActiveResizeHandle != null && drawing.SelectedShape != null)
             {
-                Point currentPosition = e.GetPosition(canvas);
-                ResizeShape(currentPosition, templShape);
+                Point currentPosition = e.GetPosition(drawing.OurCanvas);
+                ResizeShape(currentPosition, drawing.SelectedShape);
             }
         }
 
@@ -184,18 +181,17 @@ namespace WpfVar4
 
         public void RemoveResizeRectangle()
         {
-            canvas.MouseMove -= Handle_MouseMove;
-            canvas.MouseLeftButtonDown -= ResizeHandle_MouseLeftButtonDown;
-            canvas.MouseLeftButtonUp -= ResizeHandle_MouseLeftButtonUp;
-            canvas.Children.Remove(resizeRectangle);
+            drawing.OurCanvas.MouseMove -= Handle_MouseMove;
+            drawing.OurCanvas.MouseLeftButtonDown -= ResizeHandle_MouseLeftButtonDown;
+            drawing.OurCanvas.MouseLeftButtonUp -= ResizeHandle_MouseLeftButtonUp;
+            drawing.OurCanvas.Children.Remove(resizeRectangle);
             resizeRectangle = null;
             foreach (var Handle in resizeHandles)
             {
-                canvas.Children.Remove(Handle);
+                    drawing.OurCanvas.Children.Remove(Handle);
             }
 
             resizeHandles.Clear();
-            templShape = null;
         }
 
         private Rect GetShapeBounds(Shape shape)
