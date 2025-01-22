@@ -15,7 +15,7 @@ namespace WpfVar4
                 if (name != value)
                 {
                     name = value;
-                    OnPropertyChanged(Name);
+                    OnPropertyChanged(nameof(Name));
                 }
             }
         }
@@ -28,7 +28,7 @@ namespace WpfVar4
                 if (this.value != value)
                 {
                     this.value = value;
-                    OnPropertyChanged(Name);
+                    OnPropertyChanged(nameof(Value));
                 }
             }
         }
