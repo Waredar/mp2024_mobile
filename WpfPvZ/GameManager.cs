@@ -9,10 +9,13 @@ namespace WpfPvZ
         private readonly List<Zombie> zombies = [];
         private readonly List<Projectile> projectiles = [];
         public readonly GameField gameField;
+        private ZombieSpawner spawner;
 
         public GameManager(GameField field)
         {
             gameField = field ?? throw new ArgumentNullException(nameof(field));
+            spawner = new ZombieSpawner(this, 5);
+            spawner.Start();
         }
 
         public void AddPlant(Plant plant, int x, int y)
@@ -118,6 +121,8 @@ namespace WpfPvZ
 
         public void Update(float deltaTime)
         {
+            CheckGameOverCondition();
+
             if (plants.Count > 0)
             {
                 Console.WriteLine("Обновление расстений...");
@@ -149,5 +154,27 @@ namespace WpfPvZ
             Console.WriteLine("Обновление завершено!");
         }
 
+        private void CheckGameOverCondition()
+        {
+            foreach (var zombie in GetZombies())
+            {
+                if (zombie.Position.X <= 0)
+                {
+                    Console.WriteLine("Зомби достиг левого края! Игра окончена.");
+                    EndGame();
+                    break;
+                }
+            }
+        }
+
+        private void EndGame()
+        {
+            Console.WriteLine("Игра завершена! Вы проиграли.");
+            Environment.Exit(0);
+        }
+
     }
+
+
+
 }

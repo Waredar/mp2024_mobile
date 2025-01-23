@@ -58,15 +58,13 @@ namespace WpfPvZ
             gameField = new GameField(Columns, Rows, CellSize, CellSize);
             gameManager = new GameManager(gameField);
 
-            var plant1 = new PeaShotterPlant();
+            for (int i = 0; i < Rows; i++)
+            {
+                var plant1 = new PeaShotterPlant();
 
-            gameManager.AddPlant(plant1, 0, 0);
+                gameManager.AddPlant(plant1, 0, i);
+            }
 
-            var zombie1 = new TestZombie(Zombie.ZombieType.Walker, "Walker", "Slow but strong", 100, 10, 0.5f, 100f, new(-1, 0), new(gameField.FieldWidth - 100, 50), 30f);
-            var zombie2 = new TestZombie(Zombie.ZombieType.Walker, "Walker", "Slow but strong", 100, 10, 0.5f, 100f, new(-1, 0), new(gameField.FieldWidth - 50, 50), 30f);
-
-            gameManager.AddZombie(zombie1);
-            gameManager.AddZombie(zombie2);
             render = new(gameManager, GameCanvas);
         }
 

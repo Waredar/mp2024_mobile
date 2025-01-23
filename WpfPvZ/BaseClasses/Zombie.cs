@@ -96,7 +96,7 @@ namespace WpfPvZ.BaseClasses
             timeSinceLastAttack += deltaTime;
             FindPlantInRange(gameManager);
             Move(deltaTime);
-            if (Position.X < 0)
+            if (Position.X < -20)
             {
                 Console.WriteLine($"Зомби вышел за границы мира");
                 Destroy(gameManager);

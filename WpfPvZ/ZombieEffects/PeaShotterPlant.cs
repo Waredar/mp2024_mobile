@@ -32,15 +32,41 @@ namespace WpfPvZ.ZombieEffects
         {
             if (CurrentCell != null)
             {
-                if (LastAttackTime >= AttackSpeed)
+                // Проверяем, есть ли зомби на линии перед атакой
+                if (IsZombieOnLine(gameManager))
                 {
-                    Pea pea = new(Damage, 150f, gameManager.gameField.FieldWidth, CurrentCell.GetCenter());
-                    gameManager.AddProjectail(pea);
-                    LastAttackTime = 0;
+                    if (LastAttackTime >= AttackSpeed)
+                    {
+                        Pea pea = new(Damage, 150f, gameManager.gameField.FieldWidth, CurrentCell.GetCenter());
+                        gameManager.AddProjectail(pea);
+                        LastAttackTime = 0;
+                    }
+                    LastAttackTime += deltaTime;
                 }
-                LastAttackTime += deltaTime;
             }
         }
+
+        private bool IsZombieOnLine(GameManager gameManager)
+        {
+            // Получаем список всех зомби на поле
+            var zombies = gameManager.GetZombies();
+
+            // Получаем позицию центра текущей клетки
+            var plantPosition = CurrentCell.GetCenter();
+            float tolerance = 10.0f; // Допустимое отклонение по оси Y для определения линии
+
+            // Проверяем, есть ли зомби на той же линии (с учётом допустимого отклонения)
+            foreach (var zombie in zombies)
+            {
+                if (Math.Abs(zombie.Position.Y - plantPosition.Y) <= tolerance)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
     }
 
 
